@@ -21,8 +21,8 @@ def breadth_first_search(frontier, explored_set, pathways):
 
     while frontier[0] < 7:
         explored_set.append(frontier[0])
-        frontier.extend(pathways[frontier[0]])
-        frontier = deque(dict.fromkeys(frontier))
+        frontier.append(pathways[frontier[0]])
+        frontier.popleft()
         print("The following states have now been explored: ", end="")
         print(" ".join(map(str, explored_set)))
         frontier = deque([num for num in frontier if num not in explored_set])
