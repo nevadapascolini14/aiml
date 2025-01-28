@@ -2,8 +2,8 @@ from queue import PriorityQueue
 
 begin = 'A'
 
-def end (hf):
-    if hf == 0:
+def end (hf, lower_bound):
+    if hf == lower_bound:
         return True
 
 two_object_graph = {
@@ -74,7 +74,7 @@ def heur_2(height):
         print(f"Missing height for node: {height}")
     return 4 - result if result is not None else 4
 
-def A_Star_Search(graph, start, goal_condition, heuristic):
+def A_Star_Search(graph, start, goal_condition, lb_heur, heuristic):
     frontier = PriorityQueue()
     frontier.put((0, start))
     came_from = {}
@@ -85,7 +85,7 @@ def A_Star_Search(graph, start, goal_condition, heuristic):
     while not frontier.empty():
         current = frontier.get()[1]
 
-        if goal_condition(heuristic(current)):
+        if goal_condition(heuristic(current), lb_heur):
             return reconstruct_path(came_from, start, current), cost_so_far[current]
 
         for next in graph[current]:
@@ -109,7 +109,7 @@ def reconstruct_path(came_from, start, goal):
     return path
 
 def main():
-    path, cost = A_Star_Search(crates_graph, 'A', end, heur_2)
+    path, cost = A_Star_Search(two_object_graph, 'A', end, 0, heur)
     if path:
         print(f"Path: {path}")
         print(f"Total Cost: {cost}")
