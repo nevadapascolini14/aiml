@@ -14,7 +14,7 @@ state_paths = {
     8: [7, 8, 8],
 }
 
-def breadth_first_search(frontier, explored_set, pathways):
+def bfs(frontier, explored_set, pathways):
     if not frontier:
         print("There is no frontier to explore.")
         return
@@ -32,7 +32,7 @@ def breadth_first_search(frontier, explored_set, pathways):
     print("Both rooms are now clean: the problem is resolved")
 
 def main():
-    breadth_first_search(room_states, states_visited, state_paths)
+    bfs(room_states, states_visited, state_paths)
 
 if __name__ == "__main__":
     main()
