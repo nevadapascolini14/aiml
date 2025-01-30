@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 """model_exists = number of clauses
-   example = enumerate clauses, remember positive literals <= 1. """
+   example = enumerate clauses, remember positive literals <= 1."""
 
 class ForwardChaining:
     def __init__(self):
@@ -27,8 +27,8 @@ class ForwardChaining:
                 assert -n <= lit <= n, "Found reference to variable larger than n."
 
         while True:
-            fixpoint = True
-            for clause in self.clauses:
+            fixpoint = True # sets loop boolean to true
+            for clause in self.clauses: #iterates over all clauses
                 all_neg_true = all(not self.model[-lit] for lit in clause if lit < 0) 
                 if all_neg_true:
                     for lit in clause:
