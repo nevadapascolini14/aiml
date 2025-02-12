@@ -74,9 +74,9 @@ def main():
     else:
         print("UNSATISFIABLE")
 
-    result = backtrack(path_1, start, goal_test_1)
+    """result = backtrack(path_1, start, goal_test_1)
     if result:
-        print(f"Goal: {result}")
+        print(f"Goal: {result}")"""
 
 if __name__ == "__main__":
     main()

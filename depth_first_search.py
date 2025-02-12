@@ -83,8 +83,9 @@ def ids(path: dict, start: str, goal_test: callable, max_depth_limit: int):
     return None
         
 def main():
-    
-    ids(path_1, start_1, goal_test_1, 4)
+    """dfs(path_1,route_1, start_1, goal_test_1)"""
+    dls(path_1, start_1, goal_test_1, 3) 
+    """ids(path_1, start_1, goal_test_1, 4)"""
 
 if __name__ == "__main__":
     main()

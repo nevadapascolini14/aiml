@@ -14,28 +14,40 @@ state_paths = {
     'H': [0, 'G']
 }
 
-def greedy_best_first_search(frontier, explored_set, pathways):
+def goal_test_1(heur: int):
+    return heur == 0  # Explicitly return False when the goal is not met
+
+def greedy_best_first_search(frontier, explored_set, pathways, goal_test: callable):
     if not frontier:
         print("There is no frontier to explore.")
         return
 
-    while state_paths[frontier[0]][0] !=0:
-        explored_set.append(frontier[0])
-        frontier.extend(state_paths[frontier[0]][1:])
-        frontier = deque([cha for cha in frontier if cha not in explored_set])
-        min_value = float('inf')
-        min_key = None
+    while frontier:
+        current_state = frontier.popleft()  # Pop leftmost (lowest heuristic)
+        
+        if goal_test(pathways[current_state][0]):  # Check if goal is met
+            print(f"Goal reached at {current_state}")
+            return
 
-        for value in frontier:
-            if state_paths[value][0] < min_value:
-                min_value = state_paths[value][0]
-                min_key = value
-                frontier = deque([min_key])
+        explored_set.append(current_state)
+
+        # Add neighbors to frontier, avoiding revisiting explored states
+        neighbors = pathways[current_state][1:]
+        for neighbor in neighbors:
+            if neighbor not in explored_set and neighbor not in frontier:
+                frontier.append(neighbor)
+
+        # Select the next state with the lowest heuristic
+        if frontier:
+            min_key = min(frontier, key=lambda state: pathways[state][0])
+            frontier = deque([min_key])  # Reset the frontier to contain only the best state
+        
         print("We have now arrived at state", min_key)
 
 def main():
-    greedy_best_first_search(route_states, states_visited, state_paths)
+    greedy_best_first_search(route_states, states_visited, state_paths, goal_test_1)
 
 if __name__ == "__main__":
     main()
+
             
