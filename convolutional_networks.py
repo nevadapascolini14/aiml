@@ -28,7 +28,6 @@ def multi_con_layer(input: list, filters: list, output: int, counter = 0):
     
     print(f"Output layer weights: {prod(input) * output + output}")
 
-
 def main():
 
     """print (next_con_layer_input(input_1, filter_1, 5))"""
