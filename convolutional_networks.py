@@ -1,17 +1,5 @@
 from math import prod
 
-input_1 = [15, 15, 1]
-filter_1 = [3, 3, 1, 5]
-filter_2 = [2, 2, 5, 5]
-output_1 = 10
-
-filters_1 = [[3, 3, 1, 5],
-             [2, 2, 5, 5]]
-
-def convoluted_layer_output(input: list, filter: list):
-    result = ((input[0]-filter[0]+1)*(input[1]-filter[1]+1) * (filter[3]))
-    return result
-
 def next_input(input: list, current: list):
     new_input = []
     new_input.insert(0, input[0]-current[0] +1)
@@ -29,10 +17,9 @@ def multi_con_layer(input: list, filters: list, output: int, counter = 0):
     print(f"Output layer weights: {prod(input) * output + output}")
 
 def main():
-
-    """print (next_con_layer_input(input_1, filter_1, 5))"""
-    
-    """print(next_input(input_1, filters_1[0]))"""
+    input_1 = [7, 7, 1]
+    output_1 = 5
+    filters_1 = [[3, 3, 1, 1]]
 
     multi_con_layer(input_1, filters_1, output_1)
 
