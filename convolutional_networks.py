@@ -8,13 +8,18 @@ def next_input(input: list, current: list):
     return new_input
 
 def multi_con_layer(input: list, filters: list, output: int, counter = 0):
+    weights = []
+
     for layer in filters:
         weight = (prod(filters[counter][0:3]) + 1) * filters[counter][3]
         print(f"Weights at layer {counter}: {weight}")
+        weights.append(weight)
         input = next_input(input, filters[counter])
         counter += 1
     
-    print(f"Output layer weights: {prod(input) * output + output}")
+    output_layer_weights = prod(input) * output + output
+    print(f"Output layer weights: {output_layer_weights}")
+    print(f"Total weights = {sum(weights) + output_layer_weights}")
 
 def main():
     input_1 = [7, 7, 1]
