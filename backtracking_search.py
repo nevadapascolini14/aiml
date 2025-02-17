@@ -24,7 +24,7 @@ def backtrack(path: dict, current_state: str, goal_test: callable):
             
     return None
 
-def backward_chain(clauses: list, assignment=set()):
+def backward_chain(clauses: list, assignment: set):
     """Uses a backtracking approach to check whether the given list of CNF clauses is satisfiable.
 
     Args:
@@ -88,17 +88,17 @@ def main():
 
     start = 'A'
     
-    satisfying_assignment = backward_chain(clauses_1)
+    """satisfying_assignment = backward_chain(clauses_1)
 
     if satisfying_assignment:
         print("SATISFIABLE with assignment:", satisfying_assignment)
     else:
-        print("UNSATISFIABLE")
+        print("UNSATISFIABLE")"""
 
-    """result = backtrack(path_1, start, goal_test_1)
+    result = backtrack(path_1, start, goal_test_1)
     
     if result:
-        print(f"Goal: {result}")"""
+        print(f"Goal: {result}")
 
 if __name__ == "__main__":
     main()
