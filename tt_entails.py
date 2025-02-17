@@ -1,10 +1,31 @@
-"""Note that this works with CNF. If data is in a different format, convert
-to CNF first."""
-
 def tt_entails(kb: list, a: list, symbols: list):
+    """Determines entailment: whether sentence 'a' is true in all models in
+    which the knowledge-base is true.
+
+    Args:
+        kb (list): the knowledge base, expressed as a list of CNF lists
+        a (list): the sentence to be tested, expressed in CNF
+        symbols (list): the list of all knowledge-base literals, in their positive forms
+
+    Returns:
+        True, if a is entailed by kb, False otherwise
+    """
     return check_all_models(kb, a, symbols, [])
 
 def check_all_models(kb: list, a: list, symbols: list, model: list):
+    """Recursively check whether sentence a is true in all models in which the 
+    kb evaluates to true
+
+    Args:
+        kb (list): the knowledge base, expressed as a list of CNF lists
+        a (list): the sentence to be tested, expressed in CNF
+        symbols (list): the list of all knowledge-base literals, in their positive forms
+        model (list): the model of of symbol assignments to be tested
+
+    Returns:
+        True if the knowledge-base evaluates to False or both the knowledge-base and the 
+        sentence evaluate to true, else False.
+    """
     if not symbols:
         if check_truth(kb, model):
             return check_truth([a], model)  # Wrap `a` in a list
@@ -23,7 +44,17 @@ def check_all_models(kb: list, a: list, symbols: list, model: list):
 
         return result1 and result2
 
-def check_truth(kb_clauses: list, model):
+def check_truth(kb_clauses: list, model: list):
+    """checks the truth-value of a single clause against a sentence or knowledge-base.
+
+    Args:
+        kb_clauses (list): a list of knowledge-base clauses or a list representing a 
+        CNF sentence
+        model (list): the model of symbol assignments to be tested
+
+    Returns:
+        True if all clauses in kb_clauses are satified by a value in model, else False
+    """
     for clause in kb_clauses:
         truth = False
 
@@ -46,9 +77,9 @@ def main():
     
     symbols_1 = [1, 2, 3]
 
-    a_1 = [-3]  # This is a single clause
+    a_1 = [-3]  
 
-    print(tt_entails(kb_1, a_1, symbols_1))  # Now correctly wrapped in a list in check_truth
+    print(tt_entails(kb_1, a_1, symbols_1))  
 
 main()
 
