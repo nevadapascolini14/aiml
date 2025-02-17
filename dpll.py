@@ -3,11 +3,10 @@ from collections import defaultdict
 sample_symbols = {1, 2, 3}
 sample_dict = {
     1: [1, 2, 3],
-    2: [1, -2, -3],
-    3: [-1, 2, 3],
-    4: [-1, -2, -3],
-    5: [-2, 3],
-    6: [2, -3]
+    2: [-1, 2, 3],
+    3: [-1, -2, -3],
+    4: [-2, 3],
+    5: [2, -3]
 }
 
 sample_model = []
@@ -110,6 +109,7 @@ def dpll(clauses: dict, symbols: set, model: list):
     return False  
 
 def main():
+
     print(dpll(sample_dict, sample_symbols, sample_model))
 
 if __name__ == "__main__":
