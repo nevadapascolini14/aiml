@@ -1,6 +1,14 @@
 from math import prod
 
 def multi_weights(layers: list):
+    """Calculates the total weights in a multilayer neural network.
+
+    Args:
+        layers (list): A list of the numbers of neurons in each layer.
+
+    Returns:
+        int: The total number of weights in the network.
+    """
     running_total = []
     
     for i in range(len(layers) - 1):  
@@ -13,6 +21,16 @@ def multi_weights(layers: list):
     return total
 
 def next_input(input: list, current: list):
+    """Calculates the output volume of a layer of a convolutional neural network.
+
+    Args:
+        input (list): A list of the dimensions of the layer that fed input to the current layer.
+        current (list): A list of the dimensions of the current filter.
+
+    Returns:
+        list: The output volume of the filter.
+    """
+    
     new_input = []
     new_input.insert(0, input[0]-current[0] +1)
     new_input.insert(1, input[1]-current[1] +1)
@@ -20,6 +38,15 @@ def next_input(input: list, current: list):
     return new_input
 
 def multi_con_layer(input: list, filters: list, output: int, counter = 0):
+    """Calculates the weights at each layer of a convolutional neural network, and 
+    the total weights in the network.
+
+    Args:
+        input (list): The dimensions of the input 'image'.
+        filters (list): A list of lists signifying the dimensions of each filter.
+        output (int): The number of fully connected output neurons.
+        counter (int, optional): An iterator variable.
+    """
     weights = []
 
     for layer in filters:
