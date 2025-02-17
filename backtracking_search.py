@@ -1,23 +1,17 @@
-path_1 = {
-    'A': ['B', 'C', 'D'],
-    'B': ['E', 'F'],
-    'C': ['G'],
-    'D': ['H', 'I', 'J'],
-    'E': ['K', 'L'],
-    'F': ['N'],
-    'I': ['O'],
-    'L': ['M']
-}
+def backtrack(path: dict, current_state: str, goal_test: callable):
+    """Recursively traverse the search space, returning the goal if condition is found.
 
-def goal_test_1(node: str):
-    return node == 'O'
+    Args:
+        path (dict): a dictionary of reachable nodes from each key node
+        current_state (str): a string, signifying the current node
+        goal_test (callable): A function that checks if a state is a goal state
 
-start = 'A'
-
-def backtrack(path: dict, current_state: int, goal_test: callable):
+    Returns:
+        str or None: a string, signifying the goal, supposing there is one, else None
+    """
     possible_choices = path[current_state]
-    print(f"Current state: ", current_state)
-    print(f"possible choices: ", possible_choices, end="\n\n")   
+    print(f"Current state: {current_state}")
+    print(f"possible choices: {possible_choices}", end="\n\n")   
 
     for choice in possible_choices:
         if goal_test(choice):
@@ -30,42 +24,69 @@ def backtrack(path: dict, current_state: int, goal_test: callable):
             
     return None
 
-clauses_1 = [[1, 2, 3],
-           [-1, 2, 3],
-           [-1, -2, -3],
-           [-2, 3],
-           [2, -3]]
+def backward_chain(clauses: list, assignment=set()):
+    """Uses a backtracking approach to check whether the given list of CNF clauses is satisfiable.
 
-def is_clause_satisfied(clause, assignment):
-    """Checks if a given clause is satisfied by the current assignment."""
-    return any(literal in assignment for literal in clause)
+    Args:
+        clauses (list): A list of CNF clauses to be tested for satisfiability.
+        assignment (set): The model of assigned literals to be tested.
 
-def backward_chain(clauses, assignment=set()):
+    Returns:
+        set or False: A set of literals satisfying the clauses, if one exists, else None
     """
-    Checks if the given set of CNF clauses is satisfiable.
-    Uses a backtracking approach to find a valid truth assignment.
-    """
+
     if all(is_clause_satisfied(clause, assignment) for clause in clauses):
         return assignment
     
-    # Create dict of unassigned clauses
     unassigned = {abs(lit) for clause in clauses for lit in clause} - {abs(lit) for lit in assignment}
     if not unassigned:
         return False  
     
     literal = next(iter(unassigned))  
     
-    # Try assigning literal as True
     if (result := backward_chain(clauses, assignment | {literal})):
         return result
 
-    # Try assigning literal as False 
     if (result := backward_chain(clauses, assignment | {-literal})):
         return result
 
-    return False  # If neither assignment works, the set of clauses is unsatisfiable
+    return False  
+
+def is_clause_satisfied(clause: list, assignment: set):
+    """Checks whether a CNF clause is satisfied by a given set of literals
+
+    Args:
+        clause (list): A CNF clause to be tested for satisfiability.
+        assignment (set): The model of assigned literals to be tested.
+
+    Returns:
+        boolean: True if the assignment satisfies the clause, else False
+    """
+    return any(literal in assignment for literal in clause)
 
 def main():
+    
+    clauses_1 = [[1, 2, 3],
+           [-1, 2, 3],
+           [-1, -2, -3],
+           [-2, 3],
+           [2, -3]]
+    
+    path_1 = {
+    'A': ['B', 'C', 'D'],
+    'B': ['E', 'F'],
+    'C': ['G'],
+    'D': ['H', 'I', 'J'],
+    'E': ['K', 'L'],
+    'F': ['N'],
+    'I': ['O'],
+    'L': ['M']
+    }
+
+    def goal_test_1(node: str):
+        return node == 'O'
+
+    start = 'A'
     
     satisfying_assignment = backward_chain(clauses_1)
 
@@ -75,6 +96,7 @@ def main():
         print("UNSATISFIABLE")
 
     """result = backtrack(path_1, start, goal_test_1)
+    
     if result:
         print(f"Goal: {result}")"""
 
