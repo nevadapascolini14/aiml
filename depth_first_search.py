@@ -1,34 +1,18 @@
 from collections import deque
 
-path_1 = {
-    'A': ['B', 'C', 'D'],
-    'B': ['E', 'F'],
-    'C': ['G'],
-    'D': ['H', 'I', 'J'],
-    'E': ['K', 'L'],
-    'F': ['N'],
-    'I': ['O'],
-    'L': ['M']
-}
+def dfs(path: dict, start: str, goal_test: callable):
+    """Tree variety depth-first search of a state space for a goal condition.
 
-route_1 = deque()
-explored_set_1 = set()
-start_1 = 'A'
-
-def goal_test_1(node: str):
-    return node == 'O'
-
-def dfs(path: dict, route: deque, start: str, goal_test):
+    Args:
+        path (dict): A dictionary representing pathways between states
+        start (str): The initial state
+        goal_test (callable): A function that checks if a state is a goal state
+    """
+    route = deque()
     route.appendleft((start, [start]))
-    explored_set = set()
 
     while route:
         node, path_taken = route.popleft()
-        
-        if node in explored_set:
-            continue
-
-        explored_set.add(node)
 
         if goal_test(node):
             print(f"You have reached the goal: {node}")
@@ -41,10 +25,20 @@ def dfs(path: dict, route: deque, start: str, goal_test):
 
         print(f"Nodes remaining: {list(n for n, _ in route)}\n")
 
-def dls(path: dict, start: str, goal_test, depth_limit: int):
+def dls(path: dict, start: str, goal_test: callable, depth_limit: int):
+    """Tree variety depth-limited search of a state space for a goal condition.
+
+    Args:
+        path (dict): A dictionary representing pathways between states.
+        start (str): The initial state.
+        goal_test (callable): A function that checks if a state is a goal state.
+        depth_limit (int): The limit of depth of node to search before terminating.
+
+    Returns:
+        None: If no solution is found.
+    """
     route = deque()
     route.append((start, 0, [start]))  
-    explored = set()
 
     while route:
         current_node, current_depth, path_taken = route.popleft()
@@ -57,22 +51,29 @@ def dls(path: dict, start: str, goal_test, depth_limit: int):
         if current_depth >= depth_limit:
             continue
 
-        if current_node not in explored:
-            explored.add(current_node)
+        if current_node in path:
+            children = reversed(path[current_node])  
 
-            if current_node in path:
-                children = reversed(path[current_node])  
+            for child in children:  
+                route.appendleft((child, current_depth + 1, path_taken + [child]))
 
-                for child in children:  
-                    route.appendleft((child, current_depth + 1, path_taken + [child]))
-
-        print(f"Nodes explored: {explored}")
         print(f"Nodes remaining: {[n for n, _, _ in route]}\n")
 
     print("No solution could be found within the depth limit")
     return None
 
 def ids(path: dict, start: str, goal_test: callable, max_depth_limit: int):
+    """Tree variety iterative-deepening search of a state space for a goal condition.
+
+    Args:
+        path (dict): A dictionary representing pathways between states.
+        start (str): The initial state.
+        goal_test (callable): A function that checks if a state is a goal state.
+        max_depth_limit (int): The limit of depth of node to search before terminating.
+
+    Returns:
+        None: If no solution is found
+    """
     for depth_limit in range(max_depth_limit + 1):
         print(f"\nDepth Limit: {depth_limit}")
         result = dls(path, start, goal_test, depth_limit)
@@ -83,9 +84,24 @@ def ids(path: dict, start: str, goal_test: callable, max_depth_limit: int):
     return None
         
 def main():
-    """dfs(path_1,route_1, start_1, goal_test_1)"""
-    dls(path_1, start_1, goal_test_1, 3) 
-    """ids(path_1, start_1, goal_test_1, 4)"""
+    
+    path_1 = {
+        'A': ['B', 'C', 'D'],
+        'B': ['E', 'F'],
+        'C': ['G'],
+        'D': ['H', 'I', 'J'],
+        'E': ['K', 'L'],
+        'F': ['N'],
+        'I': ['O'],
+        'L': ['M']
+    }
+
+    def goal_test_1(node: str):
+        return node == 'O'
+    
+    """dfs(path_1, 'A', goal_test_1)"""
+    """dls(path_1, 'A', goal_test_1, 3)"""
+    ids(path_1, 'A', goal_test_1, 4)
 
 if __name__ == "__main__":
     main()
