@@ -1,26 +1,13 @@
-from collections import defaultdict
-
-sample_symbols = {1, 2, 3}
-sample_dict = {
-    1: [1, 2, 3],
-    2: [-1, 2, 3],
-    3: [-1, -2, -3],
-    4: [-2, 3],
-    5: [2, -3]
-}
-
-sample_model = []
-
-def find_pure_symbol(clauses: dict, symbols: set, model: list):
-    """Identifies literals that appear exclusively in their positive or negative form
+def find_pure_symbol(clauses: list, symbols: set, model: list):
+    """Identifies literals that appear exclusively in their positive or negative forms
 
     Args:
-    clauses (dict): a dictionary of propositional logic clauses, written in CNF
-    symbols (set): the set of propositions appearing in clauses
+    clauses (list): a list of propositional logic clauses, written in CNF
+    symbols (set): the set of propositions appearing in Clauses
     model (list): the configuration of positive and negative propositions to be examined
 
     Returns:
-    A proposition that occurs exclusively in positive or negative form, or none.
+    A proposition that occurs exclusively in positive or negative form, or one.
     """
     for prop in symbols: 
         if prop in model or -prop in model:
@@ -29,7 +16,7 @@ def find_pure_symbol(clauses: dict, symbols: set, model: list):
         i = None
         pure = True
 
-        for clause in clauses.values(): 
+        for clause in clauses: 
             for item in clause:
                 if abs(item) == prop:
                     if i is None:
@@ -42,16 +29,17 @@ def find_pure_symbol(clauses: dict, symbols: set, model: list):
         
     return None
 
-def find_unit_clause(clauses: dict, model: list):
+def find_unit_clause(clauses: list, model: list):
     """infers truth status of a proposition by simplification
+
     Args:
-    clauses (dict): a dictionary of propositional logic clauses, written in CNF
+    clauses (list): a list of propositional logic clauses, written in CNF
     model (list): the configuration of positive and negative propositions to be examined
 
     Returns:
-    an inferred proposition, or none.
+    an inferred proposition, or None.
     """
-    for clause in clauses.values():
+    for clause in clauses:
         new_clause = []
         for item in clause:
             if -item not in model and item not in model:
@@ -61,11 +49,12 @@ def find_unit_clause(clauses: dict, model: list):
                     return new_clause[0]
     return None
 
-def dpll(clauses: dict, symbols: set, model: list):
+def dpll(clauses: list, symbols: set, model: list):
     """
-    Implements the DPLL algorithm to check satisfiability of a CNF formula.
+    Implements the DPLL algorithm to check satisfiability of set of CNF clauses.
+
     Args:
-    clauses (dict): a dictionary of propositional logic clauses, written in CNF
+    clauses (list): a list of propositional logic clauses, written in CNF
     symbols (set): the set of propositions appearing in clauses
     model (list): the configuration of positive and negative propositions to be examined
 
@@ -73,7 +62,7 @@ def dpll(clauses: dict, symbols: set, model: list):
     a satisfying assignment (model) if one exists, otherwise False.
     """
     satisfied = True
-    for clause in clauses.values():
+    for clause in clauses:
         if not any(lit in model for lit in clause):  # Clause is not satisfied
             satisfied = False
             break
@@ -81,7 +70,7 @@ def dpll(clauses: dict, symbols: set, model: list):
     if satisfied:
         return model  
     
-    for clause in clauses.values():
+    for clause in clauses:
         if all(-lit in model for lit in clause):  # All literals in clause are false
             return False  
     
@@ -109,8 +98,18 @@ def dpll(clauses: dict, symbols: set, model: list):
     return False  
 
 def main():
+    
+    sample_symbols = {1, 2, 3}
+    sample_list = [
+                  [1, 2, 3],
+                  [-1, 2, 3],
+                  [-1, -2, -3],
+                  [-2, 3],
+                  [2, -3]
+                  ]
+    sample_model = []
 
-    print(dpll(sample_dict, sample_symbols, sample_model))
+    print(dpll(sample_list, sample_symbols, sample_model))
 
 if __name__ == "__main__":
     main()
