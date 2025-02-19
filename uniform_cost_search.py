@@ -1,32 +1,16 @@
 from queue import PriorityQueue
 
-graph_1 = {'A': [(1, 'B'), (2, 'C'), (3, 'D')],
-           'B': [(4, 'E'), (5, 'F')],
-           'C': [(6, 'G')],
-           'D': [(7, 'H'), (8, 'I'), (9, 'J')],
-           'E': [(8, 'K'), (7, 'L')],
-           'F': [(6, 'N')],
-           'G': [(5, 'O')],
-           'I': [(4, 'O')],
-           'L': [(3, 'M')],
-           'M': [(2, 'O')]
-           }
-
-start_1 = 'A'
-
-def goal_test_1(node: str):
-    return node == 'O'
-
-def get_unexplored(p_queue: PriorityQueue, explored):
-    while not p_queue.empty():
-        entry = p_queue.get()
-        if len(entry) == 2: 
-            priority, node = entry
-            if node not in explored:
-                return priority, node
-    return None
-
 def ucs(graph: dict, start: str, goal: callable):
+    """Performs a uniform cost search of a state space for a goal condition
+
+    Args:
+        graph (dict): A dictionary representing pathways and step costs between states
+        start (str): The initial state
+        goal (callable): A function that checks if a state is a goal state
+
+    Returns:
+        None: If no goal state is found.
+    """
     queue = PriorityQueue()
     explored_set = set()
     cost_so_far = {}
@@ -70,9 +54,41 @@ def ucs(graph: dict, start: str, goal: callable):
 
     return None
 
-def main():
+def get_unexplored(p_queue: PriorityQueue, explored: set):
+    """Fetches unexplored nodes from a prioirty queue.
+
+    Args:
+        p_queue (PriorityQueue): A set of nodes to examine for a goal condition.
+        explored (set): The set of nodes already explored.
+    Returns:
+        int, str: The prioirty level of the node, and its name.
+    """
     
-    ucs(graph_1, start_1, goal_test_1)
+    while not p_queue.empty():
+        entry = p_queue.get()
+        if len(entry) == 2: 
+            priority, node = entry
+            if node not in explored:
+                return priority, node
+    return None
+
+def main():
+    graph_1 = {'A': [(1, 'B'), (2, 'C'), (3, 'D')],
+           'B': [(4, 'E'), (5, 'F')],
+           'C': [(6, 'G')],
+           'D': [(7, 'H'), (8, 'I'), (9, 'J')],
+           'E': [(8, 'K'), (7, 'L')],
+           'F': [(6, 'N')],
+           'G': [(5, 'O')],
+           'I': [(4, 'O')],
+           'L': [(3, 'M')],
+           'M': [(2, 'O')]
+           }
+
+    def goal_test_1(node: str):
+        return node == 'O'
+    
+    ucs(graph_1, 'A', goal_test_1)
 
 if __name__ == "__main__":
     main()
