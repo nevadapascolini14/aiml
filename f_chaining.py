@@ -15,7 +15,7 @@ def forward_chaining(kb: list, initial_facts: list):
     agenda = deque(initial_facts)
 
     while agenda:
-        fact = agenda.pop()
+        fact = agenda.popleft()
 
         for clause in kb:
             antecedents = [lit for lit in clause if lit < 0]
