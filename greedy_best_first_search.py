@@ -29,9 +29,6 @@ def greedy_best_first_search(start: str, pathways: dict, goal_test: callable):
             if neighbor not in explored_set:
                 frontier.put((pathways[neighbor][0], neighbor))  
 
-        if not frontier.empty():
-            current_state = frontier.queue[0][1]  
-
         print("We have now arrived at state", current_state)
 
 def main():
