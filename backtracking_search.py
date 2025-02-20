@@ -3,7 +3,7 @@ def backtrack(path: dict, current_state: str, goal_test: callable):
 
     Args:
         path (dict): a dictionary of reachable nodes from each key node
-        current_state (str): a string, signifying the current node
+        current_state (str): The current node to be checked.
         goal_test (callable): A function that checks if a state is a goal state
 
     Returns:
@@ -34,7 +34,6 @@ def backward_chain(clauses: list, assignment: set):
     Returns:
         set or False: A set of literals satisfying the clauses, if one exists, else None
     """
-
     if all(is_clause_satisfied(clause, assignment) for clause in clauses):
         return assignment
     
@@ -44,10 +43,10 @@ def backward_chain(clauses: list, assignment: set):
     
     literal = next(iter(unassigned))  
     
-    if (result := backward_chain(clauses, assignment | {literal})):
+    if (result := backward_chain(clauses, assignment.copy() | {literal})):
         return result
 
-    if (result := backward_chain(clauses, assignment | {-literal})):
+    if (result := backward_chain(clauses, assignment.copy() | {-literal})):
         return result
 
     return False  
@@ -88,17 +87,17 @@ def main():
 
     start = 'A'
     
-    """satisfying_assignment = backward_chain(clauses_1)
+    satisfying_assignment = backward_chain(clauses_1, set())
 
     if satisfying_assignment:
         print("SATISFIABLE with assignment:", satisfying_assignment)
     else:
-        print("UNSATISFIABLE")"""
+        print("UNSATISFIABLE")
 
-    result = backtrack(path_1, start, goal_test_1)
+    """result = backtrack(path_1, start, goal_test_1)
     
     if result:
-        print(f"Goal: {result}")
+        print(f"Goal: {result}")"""
 
 if __name__ == "__main__":
     main()
