@@ -1,28 +1,32 @@
-def backtrack(path: dict, current_state: str, goal_test: callable):
-    """Recursively traverse the search space, returning the goal if condition is found.
+def backtrack(path: dict, current_state: str, goal_test: callable, depth=0):
+    """Recursively traverse the search space, logging each step in detail."""
+    indent = "  " * depth  # Indentation for better readability
 
-    Args:
-        path (dict): a dictionary of reachable nodes from each key node
-        current_state (str): The current node to be checked.
-        goal_test (callable): A function that checks if a state is a goal state
+    print(f"{indent}🔍 Exploring: {current_state}")
+    possible_choices = path.get(current_state, [])  # Ensure safe lookup
 
-    Returns:
-        str or None: a string, signifying the goal, supposing there is one, else None
-    """
-    possible_choices = path[current_state]
-    print(f"Current state: {current_state}")
-    print(f"possible choices: {possible_choices}", end="\n\n")   
+    print(f"{indent}🔀 Possible choices: {possible_choices}")
 
     for choice in possible_choices:
+        print(f"{indent}➡️ Checking choice: {choice}")
+
         if goal_test(choice):
+            print(f"{indent}🎯 Goal '{choice}' found! Returning.")
             return choice
-    
+
         if choice in path:
-            result = backtrack(path, choice, goal_test)
+            print(f"{indent}↪️ Recursing into '{choice}'")
+            result = backtrack(path, choice, goal_test, depth + 1)
+
             if result:
                 return result
-            
+            else:
+                print(f"{indent}⬅️ Backtracking from '{choice}'")
+
+    print(f"{indent}❌ No valid path found from '{current_state}', backtracking...")
     return None
+
+
 
 def backward_chain(clauses: list, assignment: set):
     """Uses a backtracking approach to check whether the given list of CNF clauses is satisfiable.
